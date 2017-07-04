@@ -1,0 +1,23 @@
+---
+
+- hosts: TestServers
+  sudo: yes
+  vars:
+    region: ap-southeast-2
+
+  tasks:  
+  
+  - name: resolving dependency for libfontconfig
+    apt: name=libfontconfig state=present
+  
+  - name: run test
+    shell: mvn test
+    args:
+      chdir: /avivaTest/
+    ignore_errors: yes
+    
+  - name: get test results
+    fetch: 
+      src: /avivaTest/target/surefire-reports/testng-results.xml
+      dest: /ext/jenkins_home/workspace/SIT Machine Provisioning/
+      flat: yes

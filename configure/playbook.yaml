@@ -1,0 +1,90 @@
+---
+
+- hosts: TestServers
+  sudo: yes
+  vars:
+    artifact_path: /ext/jenkins_home/workspace/SIT Machine Provisioning/aviva.war
+
+  tasks:
+
+  - name: add repo for java 8
+    apt_repository: repo='ppa:webupd8team/java' state=present
+
+  - name: accept license agreement
+    debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+
+  - name: install java 8
+    apt: name=oracle-java8-installer state=latest update-cache=yes force=yes
+
+  - name: remove maven2
+    apt:
+      name: maven
+      state: absent
+
+  - name: add maven3 repo
+    apt_repository: repo='ppa:andrei-pozolotin/maven3' state=present
+
+  - name: install maven3
+    apt: name=maven3 state=latest update-cache=yes force=yes
+
+  - name: create directory
+    file:
+      path=/artifact
+      state=directory
+      owner=root
+      group=root
+      mode=0777
+
+  - name: copy artifact
+    copy:
+      src={{ artifact_path }}
+      dest=/artifact/aviva.war
+      owner=root
+      group=root
+      mode=0777
+
+  - name: Install git
+    apt: name=git state=present
+
+  - name: Create test directory
+    file:
+      path=/avivaTest
+      state=directory
+      owner=root
+      group=root
+      mode=0777
+
+  - name: Create directory for phantomJs
+    file:
+      path=/phantomjs
+      state=directory
+      owner=root
+      group=root
+      mode=0777
+
+  - name: Download phantomjs
+    get_url:
+      url=https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
+      dest=/phantomjs
+      mode=0777
+
+  - name: untar Phantomjs
+    unarchive:
+      src: /phantomjs/phantomjs-2.1.1-linux-x86_64.tar.bz2
+      dest: /phantomjs/
+      remote_src: true
+
+  - name: Clone git test repository
+    git:
+      repo='https://github.com/subagarw/DemoProjectTest.git'
+      dest=/avivaTest
+      clone=yes
+      update=yes
+      force=yes
+
+  - name: run application
+    shell: nohup java -jar /artifact/aviva.war &
+
+
+
+
