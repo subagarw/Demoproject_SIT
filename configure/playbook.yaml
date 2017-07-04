@@ -1,6 +1,6 @@
 ---
 
-- hosts: TestServers
+- hosts: SITServers
   sudo: yes
   vars:
     artifact_path: /ext/jenkins_home/workspace/SIT Machine Provisioning/aviva.war
