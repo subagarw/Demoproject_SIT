@@ -80,6 +80,6 @@
   - name: creating the URL
     template:
       src=./templates/url.j2
-      dest=/ext/prod/url
+      dest=/ext/sit/url
 
 
