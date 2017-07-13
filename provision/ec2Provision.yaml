@@ -76,5 +76,10 @@
     template:
       src=./templates/inventory.j2
       dest=/ext/sit/inventory
+      
+  - name: creating the URL
+    template:
+      src=./templates/url.j2
+      dest=/ext/prod/url
 
 
