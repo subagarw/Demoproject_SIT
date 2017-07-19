@@ -88,7 +88,7 @@
       chain: PREROUTING
       in_interface: eth0
       protocol: tcp
-      match: tcp
+      match: tcp
       destination_port: 80
       jump: REDIRECT
       to_ports: 8080
