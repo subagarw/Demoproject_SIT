@@ -87,7 +87,7 @@
       table: nat
       chain: PREROUTING
       in_interface: eth0
-      protocol: tcp
+      protocol: tcp
       match: tcp
       destination_port: 80
       jump: REDIRECT
