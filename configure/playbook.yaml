@@ -86,14 +86,14 @@
     iptables:
       table: nat
       chain: PREROUTING
-      in_interface: eth0
+      in_interface: eth0
       protocol: tcp
       match: tcp
       destination_port: 80
       jump: REDIRECT
-      to_ports: 8080
+      to_ports: 8080
       comment: Redirect web traffic to port 8080
-    become: yes 
+    become: yes
 
   - name: run application
     shell: nohup java -jar /artifact/aviva.war &
